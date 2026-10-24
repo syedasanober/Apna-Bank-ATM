@@ -1,20 +1,62 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Apna Bank ATM</title>
+
   <script src="https://cjrtnc.leaningtech.com/4.3/loader.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 30px;
+      background: #101820;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      color: #00d4aa;
+    }
+
+    #status {
+      margin-top: 25px;
+      font-size: 17px;
+    }
+  </style>
 </head>
+
 <body>
-  <h2>Apna Bank ATM</h2>
-  <p>Loading the Java application...</p>
+  <h1>APNA BANK ATM</h1>
+  <p>Welcome to Apna Bank</p>
+  <p id="status">Loading your Java application...</p>
+
   <script>
-    (async () => {
-      await cheerpjInit();
-      cheerpjCreateDisplay(-1, -1);
-      await cheerpjRunJar("/app/APNABank.jar");
-    })();
+    async function startBank() {
+      const status = document.getElementById("status");
+
+      try {
+        status.textContent = "Starting Apna Bank ATM...";
+
+        await cheerpjInit();
+        cheerpjCreateDisplay(-1, -1);
+
+        status.textContent = "Launching the application...";
+
+        await cheerpjRunJar(
+          "/app/Apna-Bank-ATM/APNABank.jar"
+        );
+
+      } catch (error) {
+        status.textContent =
+          "Unable to launch the application. Please check the JAR compatibility and file path.";
+        console.error(error);
+      }
+    }
+
+    startBank();
   </script>
 </body>
 </html>
