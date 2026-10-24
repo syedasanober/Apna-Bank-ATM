@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,51 +9,107 @@
   <script src="https://cjrtnc.leaningtech.com/4.3/loader.js"></script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      padding: 30px;
+      min-height: 100vh;
+      padding: 30px 16px;
       background: #101820;
       color: white;
       font-family: Arial, sans-serif;
       text-align: center;
     }
 
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px 20px;
+      background: #1b2935;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
     h1 {
       color: #00d4aa;
+      margin-bottom: 10px;
     }
 
     #status {
-      margin-top: 25px;
-      font-size: 17px;
+      margin: 25px 0;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    #java-display {
+      width: 100%;
+      min-height: 300px;
+      margin-top: 20px;
+    }
+
+    .note {
+      color: #c5d1dc;
+      font-size: 14px;
+      line-height: 1.6;
     }
   </style>
 </head>
 
 <body>
-  <h1>APNA BANK ATM</h1>
-  <p>Welcome to Apna Bank</p>
-  <p id="status">Loading your Java application...</p>
+  <main class="container">
+    <h1>APNA BANK ATM</h1>
+    <p>Welcome to Apna Bank</p>
+
+    <p id="status" role="status">
+      Preparing to launch your Java application...
+    </p>
+
+    <div id="java-display"></div>
+
+    <p class="note">
+      If the application does not start, check the JAR file path,
+      Java compatibility, and any required dependency files.
+    </p>
+  </main>
 
   <script>
     async function startBank() {
       const status = document.getElementById("status");
 
       try {
-        status.textContent = "Starting Apna Bank ATM...";
+        status.textContent = "Checking Java browser runtime...";
+
+        if (typeof cheerpjInit !== "function") {
+          throw new Error(
+            "The Java runtime did not load. Check your internet connection."
+          );
+        }
+
+        status.textContent = "Initializing Java runtime...";
 
         await cheerpjInit();
+
         cheerpjCreateDisplay(-1, -1);
 
-        status.textContent = "Launching the application...";
+        status.textContent = "Launching Apna Bank ATM...";
 
         await cheerpjRunJar(
           "/app/Apna-Bank-ATM/APNABank.jar"
         );
 
+        status.textContent = "Java application finished.";
+
       } catch (error) {
+        console.error("Apna Bank launch error:", error);
+
         status.textContent =
-          "Unable to launch the application. Please check the JAR compatibility and file path.";
-        console.error(error);
+          "Unable to launch Apna Bank ATM. " +
+          (error && error.message
+            ? error.message
+            : "Check the JAR path and Java compatibility.") +
+          " Open your browser developer console for technical details.";
       }
     }
 
